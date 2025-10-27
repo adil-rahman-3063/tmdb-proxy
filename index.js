@@ -92,6 +92,50 @@ app.get("/genre/tv/list", async (req, res) => {
   }
 });
 
+// ✅ Trending movies this week
+app.get("/trending/movie", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch trending movies", details: err.message });
+  }
+});
+
+// ✅ Trending TV series this week
+app.get("/trending/tv", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/trending/tv/week?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch trending TV series", details: err.message });
+  }
+});
+
+// ✅ Newly released movies
+app.get("/movie/now-playing", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/movie/now_playing?api_key=${TMDB_API_KEY}&language=en-US&page=1`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch now playing movies", details: err.message });
+  }
+});
+
+// ✅ Newly released TV series (on the air)
+app.get("/tv/on-the-air", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/tv/on_the_air?api_key=${TMDB_API_KEY}&language=en-US&page=1`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch on-air TV series", details: err.message });
+  }
+});
+
 // ✅ Search movies
 app.get("/search", async (req, res) => {
   const query = req.query.q;
