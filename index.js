@@ -58,6 +58,40 @@ app.get("/genre/movie/list", async (req, res) => {
   }
 });
 
+// ✅ Popular TV series
+app.get("/tv/popular", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/tv/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch popular TV series", details: err.message });
+  }
+});
+
+// ✅ Discover TV series by genre
+app.get("/discover/tv", async (req, res) => {
+  try {
+    const queryParams = new URLSearchParams(req.query).toString();
+    const response = await fetch(`${BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&${queryParams}`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to discover TV series", details: err.message });
+  }
+});
+
+// ✅ Get TV genres list
+app.get("/genre/tv/list", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/genre/tv/list?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch TV genres", details: err.message });
+  }
+});
+
 // ✅ Search movies
 app.get("/search", async (req, res) => {
   const query = req.query.q;
