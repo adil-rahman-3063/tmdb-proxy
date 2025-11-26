@@ -150,6 +150,18 @@ app.get("/search", async (req, res) => {
   }
 });
 
+// ✅ Get movie details
+app.get("/movie/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch movie details", details: err.message });
+  }
+});
+
 // ✅ Get TV show details
 app.get("/tv/:id", async (req, res) => {
   const { id } = req.params;
