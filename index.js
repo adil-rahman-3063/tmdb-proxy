@@ -150,5 +150,31 @@ app.get("/search", async (req, res) => {
   }
 });
 
+// ✅ Get TV show details
+app.get("/tv/:id", async (req, res) => {
+  const { id } = req.params;
+  // Check if id is numeric to avoid conflict with other routes if any (though express handles specific routes first usually)
+  // But strictly, /tv/popular is handled above, so /tv/:id will catch everything else.
+  try {
+    const response = await fetch(`${BASE_URL}/tv/${id}?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch TV details", details: err.message });
+  }
+});
+
+// ✅ Get TV season details
+app.get("/tv/:id/season/:season_number", async (req, res) => {
+  const { id, season_number } = req.params;
+  try {
+    const response = await fetch(`${BASE_URL}/tv/${id}/season/${season_number}?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch season details", details: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
