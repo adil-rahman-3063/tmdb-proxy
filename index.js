@@ -188,5 +188,53 @@ app.get("/tv/:id/season/:season_number", async (req, res) => {
   }
 });
 
+// ✅ Get movie videos
+app.get("/movie/:id/videos", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${BASE_URL}/movie/${id}/videos?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch movie videos", details: err.message });
+  }
+});
+
+// ✅ Get TV videos
+app.get("/tv/:id/videos", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${BASE_URL}/tv/${id}/videos?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch TV videos", details: err.message });
+  }
+});
+
+// ✅ Get movie watch providers
+app.get("/movie/:id/watch/providers", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${BASE_URL}/movie/${id}/watch/providers?api_key=${TMDB_API_KEY}`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch movie providers", details: err.message });
+  }
+});
+
+// ✅ Get TV watch providers
+app.get("/tv/:id/watch/providers", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${BASE_URL}/tv/${id}/watch/providers?api_key=${TMDB_API_KEY}`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch TV providers", details: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
