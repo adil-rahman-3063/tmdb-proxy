@@ -236,5 +236,29 @@ app.get("/tv/:id/watch/providers", async (req, res) => {
   }
 });
 
+// ✅ Get movie credits (cast)
+app.get("/movie/:id/credits", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${BASE_URL}/movie/${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch movie credits", details: err.message });
+  }
+});
+
+// ✅ Get TV credits (cast)
+app.get("/tv/:id/credits", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${BASE_URL}/tv/${id}/credits?api_key=${TMDB_API_KEY}&language=en-US`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch TV credits", details: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
