@@ -150,6 +150,21 @@ app.get("/search", async (req, res) => {
   }
 });
 
+// ✅ Multi Search (Movies & TV)
+app.get("/search/multi", async (req, res) => {
+  const query = req.query.query;
+  const page = req.query.page || 1;
+  if (!query) return res.status(400).json({ error: "Missing query parameter ?query=" });
+
+  try {
+    const response = await fetch(`${BASE_URL}/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&language=en-US&page=${page}&include_adult=false`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Multi search failed", details: err.message });
+  }
+});
+
 // ✅ Get movie details
 app.get("/movie/:id", async (req, res) => {
   const { id } = req.params;
